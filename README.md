@@ -25,6 +25,7 @@
 <li><a href="https://inseasonal.cable.comcast.com/home">Seasonal Enrollment</a></li>
 <li><a href="https://www.comcastbizleads.com/EnhancedBusinessAdvantageHome">Business Leads</a></li>
 <li><a href="https://ecm.comcast.com/ecm">ECM</a></li>
+<li><a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=200826155424716">QR Code Activation</a></li>
 <li><a href="https://www.xfinity.com/support/articles/streamsaver-offers-overview">StreamSaver Activation</a></li>
 <li><span style="color: #ff0000;"><a style="color: #ff0000;" href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Account%20Holder%20Deceased.pdf">Account Change Form: Death</a></span></li>
 <li><a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Transfer%20of%20Ownership.pdf"><span style="color: #339966;">Account Change Form: Transfer</span></a></li>
