@@ -2,88 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Helpful Links</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helpful Links Directory</title>
   <style>
     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #6138F5;
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f7fa;
-    }
-    .header-bar {
-      display: flex;
-      align-items: center;
-      background-color: #6138f5;
-      padding: 20px;
-      color: white;
-    }
-    .logo {
-      height: 50px;
-      margin-right: 20px;
-      border-radius: 10px;
-    }
-    .title-container {
-      display: flex;
-      flex-direction: column;
-    }
-    .title-container h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-    .subtitle {
-      font-size: 0.9rem;
-      opacity: 0.8;
-      margin: 0;
-    }
-    .container {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .section {
-      background: white;
-      padding: 25px;
-      margin-bottom: 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.6s ease forwards;
-    }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .section h2 {
-      color: #6138f5;
-      border-bottom: 2px solid #6138f5;
-      padding-bottom: 5px;
-    }
-    ul {
-      list-style: none;
       padding: 0;
+      color: #333;
     }
+
+    header {
+      background-color: #6138F5;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    section {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    section h2 {
+      border-bottom: 2px solid #004c99;
+      padding-bottom: 5px;
+      color: #004c99;
+      font-size: 1.2em;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 10px 0;
+    }
+
     li {
       margin-bottom: 10px;
     }
+
     a {
+      color: #0077cc;
       text-decoration: none;
-      color: #007bff;
-      transition: all 0.3s ease;
     }
+
     a:hover {
-      transform: scale(1.05);
-      color: #6138f5;
-      text-shadow: 0 0 5px rgba(97, 56, 245, 0.4);
+      text-decoration: underline;
     }
-    .footer {
-      background-color: #6138f5;
-      color: white;
+
+    footer {
       text-align: center;
-      padding: 15px 0;
-      margin-top: 40px;
+      padding: 15px;
+      background-color: #004c99;
+      color: white;
+      margin-top: 20px;
+    }
+
+    .contact-list li {
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5em;
+      }
     }
   </style>
 </head>
@@ -191,3 +188,7 @@
 
 <footer>
   &copy; 2025 Bwest Inc. All rights reserved.
+</footer>
+
+</body>
+</html>
