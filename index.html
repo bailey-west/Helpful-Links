@@ -1,29 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+ <html lang="en">
+ <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpful Links Directory</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
+    :root {
+      --primary-color: #6138F5;
+      --secondary-color: #004c99;
+      --background-light: #f4f7f6;
+      --text-dark: #333;
+      --text-light: #fff;
+      --link-color: #0077cc;
+      --border-radius: 10px;
+      --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      --animation-duration: 0.3s;
+      --animation-delay: 0.1s;
+    }
+ 
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #6138F5;
+      background-color: var(--background-light);
       margin: 0;
       padding: 0;
-      color: #333;
+      color: var(--text-dark);
     }
+ 
 
     header {
-      background-color: #6138F5;
-      color: white;
-      padding: 20px;
+      background-color: var(--primary-color);
+      color: var(--text-light);
+      padding: 2rem 1rem;
       text-align: center;
     }
+ 
 
     h1 {
       margin: 0;
       font-size: 2em;
     }
+ 
+
+    .search-container {
+      padding: 1.5rem 1rem;
+      background-color: #e9e4ff;
+      text-align: center;
+    }
+ 
+
+    #searchInput {
+      width: 80%;
+      max-width: 600px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+    }
+ 
 
     main {
       display: grid;
@@ -31,164 +66,306 @@
       gap: 20px;
       padding: 20px;
     }
+ 
 
     section {
-      background-color: white;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      background-color: var(--text-light);
+      border-radius: var(--border-radius);
+      padding: 15px 20px;
+      box-shadow: var(--shadow);
+      transform: translateY(20px); /* Start slightly lower */
+      opacity: 0;
+      transition: transform var(--animation-duration) ease-out, opacity var(--animation-duration) ease-out;
     }
+ 
+
+    /* Apply animation to each section with a delay */
+    main > section:nth-child(1) {
+      transition-delay: calc(var(--animation-delay) * 1);
+    }
+    main > section:nth-child(2) {
+      transition-delay: calc(var(--animation-delay) * 2);
+    }
+    main > section:nth-child(3) {
+      transition-delay: calc(var(--animation-delay) * 3);
+    }
+    main > section:nth-child(4) {
+      transition-delay: calc(var(--animation-delay) * 4);
+    }
+    main > section:nth-child(5) {
+      transition-delay: calc(var(--animation-delay) * 5);
+    }
+    main > section:nth-child(6) {
+      transition-delay: calc(var(--animation-delay) * 6);
+    }
+ 
+
+    /* Trigger the animation when the body loads */
+    body.loaded main > section {
+      transform: translateY(0);
+      opacity: 1;
+    }
+ 
 
     section h2 {
-      border-bottom: 2px solid #004c99;
-      padding-bottom: 5px;
-      color: #004c99;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+      color: var(--secondary-color);
       font-size: 1.2em;
     }
+ 
 
     ul {
       list-style-type: none;
       padding-left: 0;
       margin: 10px 0;
     }
+ 
 
     li {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      display: flex; /* Used for aligning icon and text */
+      align-items: center;
     }
+ 
 
     a {
-      color: #0077cc;
+      color: var(--link-color);
       text-decoration: none;
+      transition: color var(--animation-duration), transform var(--animation-duration);
     }
+ 
 
     a:hover {
+      color: var(--primary-color);
       text-decoration: underline;
+      transform: scale(1.03); /* Slight pulse on hover */
     }
+ 
+
+    li .fa-solid {
+      margin-right: 12px;
+      color: #888;
+      width: 20px; /* Ensures alignment */
+      text-align: center;
+    }
+ 
 
     footer {
       text-align: center;
       padding: 15px;
-      background-color: #004c99;
-      color: white;
+      background-color: var(--secondary-color);
+      color: var(--text-light);
       margin-top: 20px;
     }
+ 
 
-    .contact-list li {
-      font-weight: 500;
+    .contact-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
+    .contact-info {
+      margin-right: 10px;
+    }
+    .copy-btn {
+      background-color: #e9e9e9;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8em;
+      transition: background-color var(--animation-duration);
+    }
+    .copy-btn:hover {
+      background-color: #dcdcdc;
+    }
+    .copy-btn .fa-solid {
+      margin-right: 5px;
+    }
+ 
 
     @media (max-width: 600px) {
       header h1 {
         font-size: 1.5em;
       }
+      .contact-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .copy-btn {
+        margin-top: 5px;
+      }
     }
   </style>
-</head>
-<body>
+ </head>
+ <body class="loaded">
+ 
 
-<header>
-  <h1>Helpful Links</h1>
-</header>
+ <header>
+  <h1>Helpful Links Directory</h1>
+ </header>
+ 
 
-<main>
+ <div class="search-container">
+  <input type="text" id="searchInput" placeholder="Type to search for a link or tool...">
+ </div>
+ 
 
+ <main>
   <section>
     <h2>Frontline Primary Links</h2>
     <ul>
-      <li><a href="https://celestial.cable.comcast.com/knowledge/">Celestial</a></li>
-      <li><a href="https://retail360a.cable.comcast.com/login-nextgen#Layout=3">Retail 360</a></li>
-      <li><a href="https://einstein360a.cable.comcast.com/einstein_nxtgen#Layout=1">Einstein 360</a></li>
-      <li><a href="https://comcast.infoquest.tv/home/">InfoQuest</a></li>
-      <li><a href="https://comcast.kronos.net/wfcstatic/applications/navigator/html5/dist/container/index.html?version=8.1.6.2033#/">Kronos</a></li>
-      <li><a href="https://myperformance.comcast.net/performance/">myPerformance</a></li>
-      <li><a href="https://wd5.myworkday.com/comcast/d/home.htmld">Workday</a></li>
-      <li><a href="https://comcasthr.zendesk.com/hc/en-us">Ask HRSS</a></li>
-      <li><a href="https://comcastcorp.sharepoint.com/sites/ComcastNow">Comcast Now</a></li>
+      <li><i class="fa-solid fa-book"></i><a href="https://celestial.cable.comcast.com/knowledge/" target="_blank" rel="noopener noreferrer">Celestial</a></li>
+      <li><i class="fa-solid fa-store"></i><a href="https://retail360a.cable.comcast.com/login-nextgen#Layout=3" target="_blank" rel="noopener noreferrer">Retail 360</a></li>
+      <li><i class="fa-solid fa-brain"></i><a href="https://einstein360a.cable.comcast.com/einstein_nxtgen#Layout=1" target="_blank" rel="noopener noreferrer">Einstein 360</a></li>
+      <li><i class="fa-solid fa-circle-question"></i><a href="https://comcast.infoquest.tv/home/" target="_blank" rel="noopener noreferrer">InfoQuest</a></li>
+      <li><i class="fa-solid fa-clock"></i><a href="https://comcast.kronos.net/wfcstatic/applications/navigator/html5/dist/container/index.html?version=8.1.6.2033#/" target="_blank" rel="noopener noreferrer">Kronos</a></li>
+      <li><i class="fa-solid fa-chart-line"></i><a href="https://myperformance.comcast.net/performance/" target="_blank" rel="noopener noreferrer">myPerformance</a></li>
+      <li><i class="fa-solid fa-briefcase"></i><a href="https://wd5.myworkday.com/comcast/d/home.htmld" target="_blank" rel="noopener noreferrer">Workday</a></li>
+      <li><i class="fa-solid fa-headset"></i><a href="https://comcasthr.zendesk.com/hc/en-us" target="_blank" rel="noopener noreferrer">Ask HRSS</a></li>
+      <li><i class="fa-solid fa-newspaper"></i><a href="https://comcastcorp.sharepoint.com/sites/ComcastNow" target="_blank" rel="noopener noreferrer">Comcast Now</a></li>
     </ul>
   </section>
+ 
 
   <section>
     <h2>Transaction Links</h2>
     <ul>
-      <li><a href="https://comcast.brandsrv.com/AppLogin.aspx">Channel Lineup</a></li>
-      <li><a href="https://abt.cable.comcast.com/">ABT</a></li>
-      <li><a href="https://housesmart.cable.comcast.com/">House SMaRT</a></li>
-      <li><a href="https://fetchitup.comcast.com/#/login">Fetch It Up</a></li>
-      <li><a href="https://www.xfinityincentivetracker.com/track">Customer Incentive Tracker</a></li>
-      <li><a href="https://inseasonal.cable.comcast.com/home">Seasonal Enrollment</a></li>
-      <li><a href="https://www.comcastbizleads.com/EnhancedBusinessAdvantageHome">Business Leads</a></li>
-      <li><a href="https://ecm.comcast.com/ecm">ECM</a></li>
-      <li><a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=200826155424716">QR Code Activation</a></li>
-      <li><a href="https://www.xfinity.com/support/articles/streamsaver-offers-overview">StreamSaver Activation</a></li>
-      <li><a href="#">Account Change Form: Death</a></li>
-      <li><a href="#">Account Change Form: Transfer</a></li>
-      <li><a href="#">Account Change Form: Name Change</a></li>
+      <li><i class="fa-solid fa-tv"></i><a href="https://comcast.brandsrv.com/AppLogin.aspx" target="_blank" rel="noopener noreferrer">Channel Lineup</a></li>
+      <li><i class="fa-solid fa-truck-fast"></i><a href="https://abt.cable.comcast.com/" target="_blank" rel="noopener noreferrer">ABT</a></li>
+      <li><i class="fa-solid fa-house-signal"></i><a href="https://housesmart.cable.comcast.com/" target="_blank" rel="noopener noreferrer">House SMaRT</a></li>
+      <li><i class="fa-solid fa-magnifying-glass"></i><a href="https://fetchitup.comcast.com/#/login" target="_blank" rel="noopener noreferrer">Fetch It Up</a></li>
+      <li><i class="fa-solid fa-gift"></i><a href="https://www.xfinityincentivetracker.com/track" target="_blank" rel="noopener noreferrer">Customer Incentive Tracker</a></li>
+      <li><i class="fa-solid fa-plane-departure"></i><a href="https://inseasonal.cable.comcast.com/home" target="_blank" rel="noopener noreferrer">Seasonal Enrollment</a></li>
+      <li><i class="fa-solid fa-dollar-sign"></i><a href="https://www.comcastbizleads.com/EnhancedBusinessAdvantageHome" target="_blank" rel="noopener noreferrer">Business Leads</a></li>
+      <li><i class="fa-solid fa-file-contract"></i><a href="https://ecm.comcast.com/ecm" target="_blank" rel="noopener noreferrer">ECM</a></li>
+      <li><i class="fa-solid fa-qrcode"></i><a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=200826155424716" target="_blank" rel="noopener noreferrer">QR Code Activation</a></li>
+      <li><i class="fa-solid fa-play"></i><a href="https://www.xfinity.com/support/articles/streamsaver-offers-overview" target="_blank" rel="noopener noreferrer">StreamSaver Activation</a></li>
+      <li><i class="fa-solid fa-file-lines"></i><a href="#">Account Change Form: Death</a></li>
+      <li><i class="fa-solid fa-file-lines"></i><a href="#">Account Change Form: Transfer</a></li>
+      <li><i class="fa-solid fa-file-lines"></i><a href="#">Account Change Form: Name Change</a></li>
     </ul>
   </section>
+ 
 
   <section>
     <h2>Operations Links</h2>
     <ul>
-      <li><a href="https://idmsa.apple.com/IDMSWebAuth/signin?appIdKey=...">Dcota</a></li>
-      <li><a href="https://retailclearpass.comcast.net/guest/auth_login.php?target=%2Fguest%2F">Clearpass</a></li>
-      <li><a href="https://xisco.comcast.net/home/menu">XiSCO</a></li>
-      <li><a href="https://rposportal.comcast.com/cash-drawer">Cash Management</a></li>
-      <li><a href="https://comcast.convergentcare.com/cmcst/demoDashboard.jsp">Kiosk Site</a></li>
-      <li><a href="https://cceis.mintek.com/EISWeb/login.aspx">Mintek</a></li>
-      <li><a href="https://cceis.mintek.com/xInventory/dashboard">Xinventory</a></li>
-      <li><a href="https://xvip.merchandising.cloud/view/login">XVIP</a></li>
-      <li><a href="https://app.smartsheet.com/b/publish?...">Verifone</a></li>
-      <li><a href="https://connect.invue.com/login">InVue Connect</a></li>
+      <li><i class="fa-solid fa-mobile-screen"></i><a href="https://idmsa.apple.com/IDMSWebAuth/signin?appIdKey=..." target="_blank" rel="noopener noreferrer">Dcota</a></li>
+      <li><i class="fa-solid fa-wifi"></i><a href="https://retailclearpass.comcast.net/guest/auth_login.php?target=%2Fguest%2F" target="_blank" rel="noopener noreferrer">Clearpass</a></li>
+      <li><i class="fa-solid fa-boxes-stacked"></i><a href="https://xisco.comcast.net/home/menu" target="_blank" rel="noopener noreferrer">XiSCO</a></li>
+      <li><i class="fa-solid fa-cash-register"></i><a href="https://rposportal.comcast.com/cash-drawer" target="_blank" rel="noopener noreferrer">Cash Management</a></li>
+      <li><i class="fa-solid fa-desktop"></i><a href="https://comcast.convergentcare.com/cmcst/demoDashboard.jsp" target="_blank" rel="noopener noreferrer">Kiosk Site</a></li>
+      <li><i class="fa-solid fa-warehouse"></i><a href="https://cceis.mintek.com/EISWeb/login.aspx" target="_blank" rel="noopener noreferrer">Mintek</a></li>
+      <li><i class="fa-solid fa-box"></i><a href="https://cceis.mintek.com/xInventory/dashboard" target="_blank" rel="noopener noreferrer">Xinventory</a></li>
+      <li><i class="fa-solid fa-tags"></i><a href="https://xvip.merchandising.cloud/view/login" target="_blank" rel="noopener noreferrer">XVIP</a></li>
+      <li><i class="fa-solid fa-credit-card"></i><a href="https://app.smartsheet.com/b/publish?..." target="_blank" rel="noopener noreferrer">Verifone</a></li>
+      <li><i class="fa-solid fa-lock"></i><a href="https://connect.invue.com/login" target="_blank" rel="noopener noreferrer">InVue Connect</a></li>
     </ul>
   </section>
+ 
 
   <section>
     <h2>Management Links</h2>
     <ul>
-      <li><a href="https://techspot.comcast.com/techspot?id=techspot_home_v2">TechSpot</a></li>
-      <li><a href="https://mysupport.service-now.com/sp">mySupport</a></li>
-      <li><a href="https://mycomcastaccess.comcast.com/identityiq/home.jsf">MyComcastAccess</a></li>
-      <li><a href="https://idlookup.cable.comcast.com/#/">ID Lookup</a></li>
-      <li><a href="https://comcast.myonlineordering.com/login.aspx">Business Card Ordering</a></li>
-      <li><a href="https://myexpense.comcast.com/reports">myExpense</a></li>
-      <li><a href="https://employeerequest.cable.comcast.com/">Badge Access Request</a></li>
-      <li><a href="https://ts4.comcast.com/views/...">Tableau</a></li>
+      <li><i class="fa-solid fa-screwdriver-wrench"></i><a href="https://techspot.comcast.com/techspot?id=techspot_home_v2" target="_blank" rel="noopener noreferrer">TechSpot</a></li>
+      <li><i class="fa-solid fa-circle-info"></i><a href="https://mysupport.service-now.com/sp" target="_blank" rel="noopener noreferrer">mySupport</a></li>
+      <li><i class="fa-solid fa-id-card"></i><a href="https://mycomcastaccess.comcast.com/identityiq/home.jsf" target="_blank" rel="noopener noreferrer">MyComcastAccess</a></li>
+      <li><i class="fa-solid fa-magnifying-glass-plus"></i><a href="https://idlookup.cable.comcast.com/#/" target="_blank" rel="noopener noreferrer">ID Lookup</a></li>
+      <li><i class="fa-solid fa-address-card"></i><a href="https://comcast.myonlineordering.com/login.aspx" target="_blank" rel="noopener noreferrer">Business Card Ordering</a></li>
+      <li><i class="fa-solid fa-receipt"></i><a href="https://myexpense.comcast.com/reports" target="_blank" rel="noopener noreferrer">myExpense</a></li>
+      <li><i class="fa-solid fa-user-check"></i><a href="https://employeerequest.cable.comcast.com/" target="_blank" rel="noopener noreferrer">Badge Access Request</a></li>
+      <li><i class="fa-solid fa-chart-pie"></i><a href="https://ts4.comcast.com/views/..." target="_blank" rel="noopener noreferrer">Tableau</a></li>
     </ul>
   </section>
+ 
 
   <section>
     <h2>Important Contacts</h2>
     <ul class="contact-list">
-      <li>Mike Dube - (603) 661-3011</li>
-      <li>Shana Farer-Feld - (603) 759-3491</li>
-      <li>Bailey West - (802) 557-2031</li>
-      <li>Matthew Descoteau - (802) 777-1802</li>
-      <li>Josh Salthouse (Security) - (860) 990-5570</li>
-      <li>Mark Agruso (Security) - (860) 626-3165</li>
-      <li>Mark Geraghty (Business) - (855) 838-2082</li>
-      <li>John McMahon (Facilities) - (860) 491-6737</li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-user"></i> <a href="tel:603-661-3011">Mike Dube</a> - (603) 661-3011</div><button class="copy-btn" data-clipboard-text="603-661-3011"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-user"></i> <a href="tel:603-759-3491">Shana Farer-Feld</a> - (603) 759-3491</div><button class="copy-btn" data-clipboard-text="603-759-3491"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-user"></i> <a href="tel:802-557-2031">Bailey West</a> - (802) 557-2031</div><button class="copy-btn" data-clipboard-text="802-557-2031"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-user"></i> <a href="tel:802-777-1802">Matthew Descoteau</a> - (802) 777-1802</div><button class="copy-btn" data-clipboard-text="802-777-1802"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-shield-halved"></i> Josh Salthouse (Security) - (860) 990-5570</div><button class="copy-btn" data-clipboard-text="860-990-5570"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-shield-halved"></i> Mark Agruso (Security) - (860) 626-3165</div><button class="copy-btn" data-clipboard-text="860-626-3165"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-briefcase"></i> Mark Geraghty (Business) - (855) 838-2082</div><button class="copy-btn" data-clipboard-text="855-838-2082"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-building"></i> John McMahon (Facilities) - (860) 491-6737</div><button class="copy-btn" data-clipboard-text="860-491-6737"><i class="fa-solid fa-copy"></i>Copy</button></li>
     </ul>
   </section>
+ 
 
   <section>
     <h2>Support Numbers</h2>
     <ul class="contact-list">
-      <li>Customer IVR - (800) 934-6489</li>
-      <li>Customer XM Support - (888) 934-6489</li>
-      <li>Customer Fraud Dept (CSA) - (844) 335-8719</li>
-      <li>Internet Essentials - (855) 846-8376</li>
-      <li>COE Tier 2 - (866) 461-0805</li>
-      <li>CBM Pre/Post Sale Support - (844) 963-0210</li>
-      <li>TPV - (855) 423-9888</li>
-      <li>IVR Verbal Consent - (844) 963-0043</li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-phone"></i> Customer IVR - (800) 934-6489</div><button class="copy-btn" data-clipboard-text="800-934-6489"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-mobile-button"></i> Customer XM Support - (888) 934-6489</div><button class="copy-btn" data-clipboard-text="888-934-6489"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-user-secret"></i> Customer Fraud Dept (CSA) - (844) 335-8719</div><button class="copy-btn" data-clipboard-text="844-335-8719"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-wifi"></i> Internet Essentials - (855) 846-8376</div><button class="copy-btn" data-clipboard-text="855-846-8376"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-headset"></i> COE Tier 2 - (866) 461-0805</div><button class="copy-btn" data-clipboard-text="866-461-0805"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-handshake"></i> CBM Pre/Post Sale Support - (844) 963-0210</div><button class="copy-btn" data-clipboard-text="844-963-0210"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-microphone"></i> TPV - (855) 423-9888</div><button class="copy-btn" data-clipboard-text="855-423-9888"><i class="fa-solid fa-copy"></i>Copy</button></li>
+      <li class="contact-item"><div class="contact-info"><i class="fa-solid fa-check-to-slot"></i> IVR Verbal Consent - (844) 963-0043</div><button class="copy-btn" data-clipboard-text="844-963-0043"><i class="fa-solid fa-copy"></i>Copy</button></li>
     </ul>
   </section>
+ </main>
+ 
 
-</main>
-
-<footer>
+ <footer>
   &copy; 2025 Bwest Inc. All rights reserved.
-</footer>
+ </footer>
+ 
 
-</body>
-</html>
+ <script>
+    // Set the 'loaded' class on the body after a short delay to trigger the initial animations
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+    }, 100);
+ 
+
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let filter = this.value.toUpperCase();
+        let main = document.querySelector('main');
+        let sections = main.getElementsByTagName('section');
+ 
+
+        for (let i = 0; i < sections.length; i++) {
+            let listItems = sections.item(i).getElementsByTagName('li');
+            let sectionVisible = false;
+ 
+
+            for (let j = 0; j < listItems.length; j++) {
+                let itemText = listItems.item(j).textContent || listItems.item(j).innerText;
+                if (itemText.toUpperCase().indexOf(filter) > -1) {
+                    listItems.item(j).style.display = "";
+                    sectionVisible = true;
+                } else {
+                    listItems.item(j).style.display = "none";
+                }
+            }
+            sections.item(i).style.display = sectionVisible ? "" : "none";
+        }
+    });
+ 
+
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const textToCopy = button.getAttribute('data-clipboard-text');
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        });
+    });
+ </script>
+ 
+
+ </body>
+ </html>
