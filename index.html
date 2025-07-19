@@ -2,97 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Helpful Links Directory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Helpful Links</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f7fa;
       margin: 0;
-      padding: 0;
-      color: #333;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
     }
-
-    header {
+    .header-bar {
+      display: flex;
+      align-items: center;
       background-color: #6138f5;
+      padding: 20px;
       color: white;
-      padding: 20px;
-      text-align: center;
     }
-
-    h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-
-    main {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-
-    section {
-      background-color: white;
+    .logo {
+      height: 50px;
+      margin-right: 20px;
       border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-
-    section h2 {
+    .title-container {
+      display: flex;
+      flex-direction: column;
+    }
+    .title-container h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin: 0;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .section h2 {
+      color: #6138f5;
       border-bottom: 2px solid #6138f5;
       padding-bottom: 5px;
-      color: #6138f5;
-      font-size: 1.2em;
     }
-
     ul {
-      list-style-type: none;
-      padding-left: 0;
-      margin: 10px 0;
+      list-style: none;
+      padding: 0;
     }
-
     li {
       margin-bottom: 10px;
     }
-
     a {
-      color: #0077cc;
       text-decoration: none;
+      color: #007bff;
+      transition: all 0.3s ease;
     }
-
     a:hover {
-      text-decoration: underline;
+      transform: scale(1.05);
+      color: #6138f5;
+      text-shadow: 0 0 5px rgba(97, 56, 245, 0.4);
     }
-
-    footer {
-      text-align: center;
-      padding: 15px;
+    .footer {
       background-color: #6138f5;
       color: white;
-      margin-top: 20px;
-    }
-
-    .contact-list li {
-      font-weight: 500;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.5em;
-      }
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
+  <div class="header-bar">
+    <img src="xfinity-logo.png" alt="Xfinity Logo" class="logo" />
+    <div class="title-container">
+      <h1>Helpful Links</h1>
+      <p class="subtitle">Built by Bailey West</p>
+    </div>
+  </div>
 
-<header>
-  <h1>Helpful Links</h1>
-</header>
-
-<main>
-
-  <section>
+  <div class="section">
     <h2>Frontline Links</h2>
     <ul>
       <li><a href="https://celestial.cable.comcast.com/knowledge/">Celestial</a></li>
@@ -105,17 +109,85 @@
       <li><a href="https://comcasthr.zendesk.com/hc/en-us">Ask HRSS</a></li>
       <li><a href="https://comcastcorp.sharepoint.com/sites/ComcastNow">Comcast Now</a></li>
     </ul>
-  </section>
+  </div>
+    <div class="section">
+    <h2>Transaction Links</h2>
+    <ul>
+      <li><a href="https://comcast.brandsrv.com/AppLogin.aspx">Channel Lineup</a></li>
+      <li><a href="https://abt.cable.comcast.com/">ABT</a></li>
+      <li><a href="https://housesmart.cable.comcast.com/">House SMaRT</a></li>
+      <li><a href="https://fetchitup.comcast.com/#/login">Fetch It Up</a></li>
+      <li><a href="https://www.xfinityincentivetracker.com/track">Customer Incentive Tracker</a></li>
+      <li><a href="https://inseasonal.cable.comcast.com/home">Seasonal Enrollment</a></li>
+      <li><a href="https://www.comcastbizleads.com/EnhancedBusinessAdvantageHome">Business Leads</a></li>
+      <li><a href="https://ecm.comcast.com/ecm">ECM</a></li>
+      <li><a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=200826155424716">QR Code Activation</a></li>
+      <li><a href="https://www.xfinity.com/support/articles/streamsaver-offers-overview">StreamSaver Activation</a></li>
+      <li><a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Account%20Holder%20Deceased.pdf" style="color: #ff0000;">Account Change Form: Death</a></li>
+      <li><a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Transfer%20of%20Ownership.pdf" style="color: #339966;">Account Change Form: Transfer</a></li>
+      <li><a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Name%20Change.pdf" style="color: #ff00ff;">Account Change Form: Name Change</a></li>
+    </ul>
+  </div>
 
-  <!-- Remaining sections unchanged -->
-  <!-- (Just keep the same Transaction Links, Operations, etc. from earlier version) -->
+  <div class="section">
+    <h2>Operations Links</h2>
+    <ul>
+      <li><a href="https://idmsa.apple.com/IDMSWebAuth/signin?appIdKey=86a0bdd9680793c8a66735594f50f701edb36b88b45c100ee8b7076a73358c67&baseURL=https://demounit.apple.com/index.html&rv=1">Dcota</a></li>
+      <li><a href="https://retailclearpass.comcast.net/guest/auth_login.php?target=%2Fguest%2F">Clearpass</a></li>
+      <li><a href="https://xisco.comcast.net/home/menu">XiSCO</a></li>
+      <li><a href="https://rposportal.comcast.com/cash-drawer">Cash Management</a></li>
+      <li><a href="https://comcast.convergentcare.com/cmcst/demoDashboard.jsp">Kiosk Site</a></li>
+      <li><a href="https://cceis.mintek.com/EISWeb/login.aspx">Mintek</a></li>
+      <li><a href="https://cceis.mintek.com/xInventory/dashboard">Xinventory</a></li>
+      <li><a href="https://xvip.merchandising.cloud/view/login">XVIP</a></li>
+      <li><a href="https://app.smartsheet.com/b/publish?EQBCT=9e879ff68c05488ea264ff933fa0d5e9">Verifone</a></li>
+      <li><a href="https://connect.invue.com/login">InVue Connect</a></li>
+    </ul>
+  </div>
+  <div class="section">
+    <h2>Management Links</h2>
+    <ul>
+      <li><a href="https://techspot.comcast.com/techspot?id=techspot_home_v2">TechSpot</a></li>
+      <li><a href="https://mysupport.service-now.com/sp">mySupport</a></li>
+      <li><a href="https://mycomcastaccess.comcast.com/identityiq/home.jsf">MyComcastAccess</a></li>
+      <li><a href="https://idlookup.cable.comcast.com/#/">ID Lookup</a></li>
+      <li><a href="https://comcast.myonlineordering.com/login.aspx">Business Card Ordering</a></li>
+      <li><a href="https://myexpense.comcast.com/reports">myExpense</a></li>
+      <li><a href="https://employeerequest.cable.comcast.com/">Badge Access Request</a></li>
+      <li><a href="https://ts4.comcast.com/views/NSRLandingPage_16361275526690/Home?%3AshowVizHome=no&%3Aembed=y&%3Arefresh=y&%3Alinktarget=_blank#1">Tableau</a></li>
+    </ul>
+  </div>
 
-</main>
+  <div class="section">
+    <h2>Important Contacts</h2>
+    <ul>
+      <li>Mike Dube - (603) 661-3011</li>
+      <li>Shana Farer-Feld - (603) 759-3491</li>
+      <li>Bailey West - (802) 557-2031</li>
+      <li>Matthew Descoteau - (802) 777-1802</li>
+      <li>Josh Salthouse (Security) - (860) 990-5570</li>
+      <li>Mark Agruso (Security) - (860) 626-3165</li>
+      <li>Mark Geraghty (Business) - (855) 838-2082</li>
+      <li>John McMahon (Facilities) - (860) 491-6737</li>
+    </ul>
+  </div>
 
-<footer>
-  &copy; 2025 Bwest Inc. All rights reserved.
-</footer>
+  <div class="section">
+    <h2>Support Numbers</h2>
+    <ul>
+      <li>Customer IVR - (800) 934-6489</li>
+      <li>Customer XM Support - (888) 934-6489</li>
+      <li>Customer Fraud Dept (CSA) - (844) 335-8719</li>
+      <li>Internet Essentials - (855) 846-8376</li>
+      <li>COE Tier 2 - (866) 461-0805</li>
+      <li>CBM Pre/Post Sale Support - (844) 963-0210</li>
+      <li>TPV - (855) 423-9888</li>
+      <li>IVR Verbal Consent - (844) 963-0043</li>
+    </ul>
+  </div>
 
+  <footer>
+    &copy; 2025 Bwest Inc. All rights reserved.
+  </footer>
 </body>
 </html>
-
