@@ -138,6 +138,22 @@
             width: 20px;
             text-align: center;
         }
+        
+        /* --- Widget Specific Styles --- */
+        #weather-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            padding-top: 10px;
+        }
+        #weather-info img {
+            margin-right: 10px;
+        }
+        .tradingview-widget-container {
+             margin: 0 auto; /* Center the container */
+        }
+        /* --- End Widget Styles --- */
 
         footer {
             text-align: center;
@@ -200,6 +216,26 @@
 </div>
 
 <main>
+    <section>
+        <h2>Local Weather</h2>
+        <div id="weather-info">Loading weather...</div>
+    </section>
+
+    <section>
+        <h2>Stock Ticker</h2>
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+            {
+            "symbol": "NASDAQ:CMCSA",
+            "width": "100%",
+            "colorTheme": "light",
+            "isTransparent": true,
+            "locale": "en"
+            }
+            </script>
+        </div>
+    </section>
     <section>
         <h2>Frontline Primary Links</h2>
         <ul>
@@ -341,18 +377,29 @@
 
             for (let section of sections) {
                 let listItems = section.getElementsByTagName('li');
+                let sectionTitle = section.querySelector('h2');
                 let sectionVisible = false;
-                for (let item of listItems) {
-                    let itemText = item.textContent || item.innerText;
-                    if (itemText.toUpperCase().indexOf(filter) > -1) {
+
+                // Check if search term is in the section title
+                if (sectionTitle && sectionTitle.textContent.toUpperCase().indexOf(filter) > -1) {
+                    sectionVisible = true;
+                    // If title matches, show all list items in that section
+                    for (let item of listItems) {
                         item.style.display = "";
-                        sectionVisible = true;
-                        anyVisible = true;
-                    } else {
-                        item.style.display = "none";
+                    }
+                } else { // Otherwise, search within list items
+                    for (let item of listItems) {
+                        let itemText = item.textContent || item.innerText;
+                        if (itemText.toUpperCase().indexOf(filter) > -1) {
+                            item.style.display = "";
+                            sectionVisible = true;
+                        } else {
+                            item.style.display = "none";
+                        }
                     }
                 }
                 section.style.display = sectionVisible ? "" : "none";
+                if(sectionVisible) anyVisible = true;
             }
             noResultsMessage.style.display = anyVisible ? "none" : "block";
         });
@@ -385,6 +432,39 @@
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({top: 0, behavior: 'smooth'});
         });
+        
+        // --- ADDED: Weather Widget Fetch ---
+        const apiKey = 'YOUR_API_KEY'; // <-- ❗ PASTE YOUR OPENWEATHERMAP KEY HERE ❗
+        const lat = 44.4415; // Latitude for Williston, VT
+        const lon = -73.1007; // Longitude for Williston, VT
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) { throw new Error('Network response was not ok'); }
+                return response.json();
+            })
+            .then(data => {
+                const weatherInfoDiv = document.getElementById('weather-info');
+                if (data && data.weather && data.main) {
+                    const description = data.weather[0].description;
+                    const temperature = Math.round(data.main.temp);
+                    const icon = data.weather[0].icon;
+                    const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
+
+                    weatherInfoDiv.innerHTML = `
+                        <img src="${iconUrl}" alt="${description}">
+                        <div>${temperature}°F, ${description}</div>
+                    `;
+                } else {
+                     weatherInfoDiv.textContent = 'Could not fetch weather data.';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+                const weatherInfoDiv = document.getElementById('weather-info');
+                weatherInfoDiv.textContent = 'Failed to load weather. Check API key.';
+            });
     });
 </script>
 
