@@ -39,10 +39,11 @@
             transition: background-color var(--animation-duration), color var(--animation-duration);
         }
 
+        /* --- UPDATED: Header Styles for Thinner Layout --- */
         header {
             background-color: var(--primary-color);
             color: var(--text-light);
-            padding: 0.5rem 1.5rem; /* Reduced vertical padding */
+            padding: 0.75rem 1.5rem; /* Reduced vertical padding */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -51,27 +52,22 @@
         
         .header-left, .header-center, .header-right {
             flex: 1;
+            display: flex;
+            align-items: center;
         }
         
         .header-center {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px; /* Reduced gap */
+            justify-content: center;
         }
 
         .header-right {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 8px; /* Reduced gap */
+            justify-content: flex-end;
+            gap: 20px; /* Add space between controls */
         }
 
         h1 {
             margin: 0;
-            font-size: 1.75em; /* Slightly smaller title */
+            font-size: 1.75em;
         }
 
         /* --- Cascading Header Animation --- */
@@ -88,39 +84,27 @@
             }
         }
         
-        /* --- Shine Effect for Promo Link --- */
-        .shine-link {
+        /* --- ADDED: Breathing Effect for Promo Link --- */
+        .promo-link {
             font-weight: bold;
             color: #fff;
             text-decoration: none;
-            position: relative;
-            overflow: hidden;
             padding: 3px 6px;
             border-radius: 5px;
-            transition: opacity 0.3s;
             font-size: 0.9em;
+            animation: breathing 2.5s infinite alternate ease-in-out;
+            text-align: center;
         }
-        header a.shine-link:hover {
+        header a.promo-link:hover {
             color: #fff; /* Keep color white on hover */
-            opacity: 0.85;
             text-decoration: none;
+            animation-play-state: paused; /* Pause animation on hover */
+            opacity: 1;
         }
-        .shine-link::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(120deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 70%);
-            transform: rotate(30deg);
-            animation: shine 5s infinite;
+        @keyframes breathing {
+            from { opacity: 1; }
+            to { opacity: 0.65; }
         }
-        @keyframes shine {
-            0% { transform: translateX(-75%) translateY(-25%) rotate(30deg); }
-            100% { transform: translateX(25%) translateY(25%) rotate(30deg); }
-        }
-
 
         .search-container {
             padding: 1.5rem 1rem;
@@ -199,7 +183,7 @@
         
         /* --- Header Widget Styles --- */
         #weather-info {
-            font-size: 1em; /* Larger weather text */
+            font-size: 1em;
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -217,7 +201,7 @@
             background-color: rgba(0, 0, 0, 0.1);
             padding: 4px 8px;
             border-radius: 8px;
-            min-width: 200px;
+            min-width: 150px; /* Adjusted min-width */
         }
 
         footer {
@@ -254,21 +238,21 @@
         }
         #backToTopBtn:hover { background-color: var(--secondary-color); }
 
+        /* --- UPDATED: Responsive Styles --- */
         @media (max-width: 850px) {
             header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px; /* Reduced gap */
                 padding: 1rem;
             }
             .header-left, .header-center, .header-right {
                 flex: none;
-                text-align: center;
                 width: 100%;
-                align-items: center;
                 justify-content: center;
             }
-             .theme-switch-wrapper {
-                justify-content: center;
+             .header-right {
+                flex-direction: row; /* Keep controls in a row */
+                flex-wrap: wrap; /* Allow wrapping if needed */
             }
         }
     </style>
@@ -281,11 +265,11 @@
     </div>
     <div class="header-center">
         <h1 id="main-title">Helpful Links Directory</h1>
-        <a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=240319165608377" class="shine-link" target="_blank" rel="noopener noreferrer">
-            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> ACTIVE MOBILE PROMOTIONS
-        </a>
     </div>
     <div class="header-right">
+        <a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=240319165608377" class="promo-link" target="_blank" rel="noopener noreferrer">
+            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> ACTIVE MOBILE PROMOTIONS
+        </a>
         <div class="stock-widget-wrapper">
             <div class="tradingview-widget-container">
                 <div class="tradingview-widget-container__widget"></div>
@@ -513,7 +497,7 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         });
         
-        // --- ADDED: Weather Widget Fetch ---
+        // --- Weather Widget Fetch ---
         const apiKey = '0f19958b4004e882ae745df3f9823c80'; // API Key has been inserted
         const lat = 44.4415; // Latitude for Williston, VT
         const lon = -73.1007; // Longitude for Williston, VT
