@@ -16,6 +16,7 @@
             --border-radius: 10px;
             --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             --animation-duration: 0.3s;
+            --error-color: #d93025;
         }
 
         /* --- Dark Mode Theme --- */
@@ -26,6 +27,7 @@
             --text-dark: #e0e0e0;
             --text-light: #fff;
             --link-color: #8ab4f8;
+            --error-color: #f28b82;
         }
 
         body {
@@ -40,9 +42,31 @@
         header {
             background-color: var(--primary-color);
             color: var(--text-light);
-            padding: 2rem 1rem;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .header-left, .header-center, .header-right {
+            flex: 1;
+        }
+        
+        .header-center {
             text-align: center;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
         }
 
         h1 {
@@ -63,6 +87,32 @@
                 transform: translateY(0) scale(1);
             }
         }
+        
+        /* --- Shine Effect for Promo Link --- */
+        .shine-link {
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            padding: 5px;
+        }
+        .shine-link::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            animation: shine 5s infinite;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-75%) translateY(-25%) rotate(30deg); }
+            100% { transform: translateX(25%) translateY(25%) rotate(30deg); }
+        }
+
 
         .search-container {
             padding: 1.5rem 1rem;
@@ -139,21 +189,25 @@
             text-align: center;
         }
         
-        /* --- Widget Specific Styles --- */
+        /* --- Header Widget Styles --- */
         #weather-info {
+            font-size: 0.9em;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-            padding-top: 10px;
+            justify-content: flex-start;
+        }
+        #weather-info.error {
+            color: var(--text-light);
+            opacity: 0.8;
         }
         #weather-info img {
-            margin-right: 10px;
+            margin-right: 8px;
+            width: 40px;
+            height: 40px;
         }
         .tradingview-widget-container {
-             margin: 0 auto; /* Center the container */
+             min-width: 200px;
         }
-        /* --- End Widget Styles --- */
 
         footer {
             text-align: center;
@@ -170,12 +224,12 @@
         .copy-btn .fa-solid { margin-right: 5px; }
 
         /* --- Theme Switch CSS --- */
-        .theme-switch-wrapper { display: flex; align-items: center; gap: 10px; position: absolute; top: 20px; right: 20px; }
+        .theme-switch-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
         .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
         .theme-switch input { display:none; }
         .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; }
         .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; }
-        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider { background-color: var(--secondary-color); }
         input:checked + .slider:before { transform: translateX(20px); }
         .slider.round { border-radius: 34px; }
         .slider.round:before { border-radius: 50%; }
@@ -189,25 +243,57 @@
         }
         #backToTopBtn:hover { background-color: var(--secondary-color); }
 
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.5em; }
-            .theme-switch-wrapper { position: static; justify-content: center; padding-top: 10px; }
-            .contact-item { flex-direction: column; align-items: flex-start; }
-            .copy-btn { margin-top: 5px; }
+        @media (max-width: 850px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .header-left, .header-center, .header-right {
+                flex: none;
+                text-align: center;
+                width: 100%;
+                align-items: center;
+                justify-content: center;
+            }
+             .theme-switch-wrapper {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="checkbox">
-            <input type="checkbox" id="checkbox" />
-            <div class="slider round"></div>
-        </label>
-        <span>Dark Mode</span>
+    <div class="header-left">
+        <div id="weather-info">Loading...</div>
     </div>
-    <h1 id="main-title">Helpful Links Directory</h1>
+    <div class="header-center">
+        <h1 id="main-title">Helpful Links Directory</h1>
+        <a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=240319165608377" class="shine-link" target="_blank" rel="noopener noreferrer">
+            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> ACTIVE MOBILE PROMOTIONS
+        </a>
+    </div>
+    <div class="header-right">
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+            {
+            "symbol": "NASDAQ:CMCSA",
+            "width": "100%",
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "locale": "en"
+            }
+            </script>
+        </div>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+            </label>
+            <span>Dark Mode</span>
+        </div>
+    </div>
 </header>
 
 <div class="search-container">
@@ -216,26 +302,6 @@
 </div>
 
 <main>
-    <section>
-        <h2>Local Weather</h2>
-        <div id="weather-info">Loading weather...</div>
-    </section>
-
-    <section>
-        <h2>Stock Ticker</h2>
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-            {
-            "symbol": "NASDAQ:CMCSA",
-            "width": "100%",
-            "colorTheme": "light",
-            "isTransparent": true,
-            "locale": "en"
-            }
-            </script>
-        </div>
-    </section>
     <section>
         <h2>Frontline Primary Links</h2>
         <ul>
@@ -434,7 +500,7 @@
         });
         
         // --- ADDED: Weather Widget Fetch ---
-        const apiKey = 'YOUR_API_KEY'; // <-- ❗ PASTE YOUR OPENWEATHERMAP KEY HERE ❗
+        const apiKey = '0f19958b4004e882ae745df3f9823c80'; // <-- ❗ PASTE YOUR OPENWEATHERMAP KEY HERE ❗
         const lat = 44.4415; // Latitude for Williston, VT
         const lon = -73.1007; // Longitude for Williston, VT
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
@@ -450,7 +516,7 @@
                     const description = data.weather[0].description;
                     const temperature = Math.round(data.main.temp);
                     const icon = data.weather[0].icon;
-                    const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
+                    const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
                     weatherInfoDiv.innerHTML = `
                         <img src="${iconUrl}" alt="${description}">
@@ -463,7 +529,8 @@
             .catch(error => {
                 console.error('Error fetching weather data:', error);
                 const weatherInfoDiv = document.getElementById('weather-info');
-                weatherInfoDiv.textContent = 'Failed to load weather. Check API key.';
+                weatherInfoDiv.classList.add('error');
+                weatherInfoDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>&nbsp; Check API Key`;
             });
     });
 </script>
