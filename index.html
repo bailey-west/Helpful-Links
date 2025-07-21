@@ -42,7 +42,7 @@
         header {
             background-color: var(--primary-color);
             color: var(--text-light);
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -58,7 +58,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
         }
 
         .header-right {
@@ -66,7 +66,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 10px;
+            gap: 8px;
         }
 
         h1 {
@@ -96,6 +96,12 @@
             position: relative;
             overflow: hidden;
             padding: 5px;
+            border-radius: 5px;
+            transition: opacity 0.3s;
+        }
+        .shine-link:hover {
+            opacity: 0.85;
+            text-decoration: none;
         }
         .shine-link::after {
             content: '';
@@ -205,8 +211,11 @@
             width: 40px;
             height: 40px;
         }
-        .tradingview-widget-container {
-             min-width: 200px;
+        .stock-widget-wrapper {
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 4px 8px;
+            border-radius: 8px;
+            min-width: 200px;
         }
 
         footer {
@@ -246,7 +255,8 @@
         @media (max-width: 850px) {
             header {
                 flex-direction: column;
-                gap: 20px;
+                gap: 15px;
+                padding: 1rem;
             }
             .header-left, .header-center, .header-right {
                 flex: none;
@@ -274,17 +284,19 @@
         </a>
     </div>
     <div class="header-right">
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-            {
-            "symbol": "NASDAQ:CMCSA",
-            "width": "100%",
-            "colorTheme": "dark",
-            "isTransparent": true,
-            "locale": "en"
-            }
-            </script>
+        <div class="stock-widget-wrapper">
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                {
+                "symbol": "NASDAQ:CMCSA",
+                "width": "100%",
+                "colorTheme": "dark",
+                "isTransparent": true,
+                "locale": "en"
+                }
+                </script>
+            </div>
         </div>
         <div class="theme-switch-wrapper">
             <label class="theme-switch" for="checkbox">
@@ -500,7 +512,7 @@
         });
         
         // --- ADDED: Weather Widget Fetch ---
-        const apiKey = '0f19958b4004e882ae745df3f9823c80'; // <-- ❗ PASTE YOUR OPENWEATHERMAP KEY HERE ❗
+        const apiKey = '0f19958b4004e882ae745df3f9823c80'; // API Key has been inserted
         const lat = 44.4415; // Latitude for Williston, VT
         const lon = -73.1007; // Longitude for Williston, VT
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
@@ -530,7 +542,7 @@
                 console.error('Error fetching weather data:', error);
                 const weatherInfoDiv = document.getElementById('weather-info');
                 weatherInfoDiv.classList.add('error');
-                weatherInfoDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>&nbsp; Check API Key`;
+                weatherInfoDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>&nbsp; Weather unavailable`;
             });
     });
 </script>
