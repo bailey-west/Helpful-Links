@@ -1,520 +1,528 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unified Sales Operating Framework Calculator</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Helpful Links Directory</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- html2pdf.js for PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
                     colors: {
-                        brand: '#5e22d9',
-                        brandDark: '#4a1ab0',
+                        primary: '#6366f1', // Indigo 500
+                        secondary: '#4f46e5', // Indigo 600
+                        dark: '#0f172a', // Slate 900
+                        darkcard: '#1e293b', // Slate 800
                     }
                 }
             }
         }
     </script>
+    <style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 p-4 md:p-6 font-sans">
-    
-    <!-- Top Action Bar (Not included in PDF) -->
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-4 gap-4" id="action-bar">
-        <div class="flex items-center gap-3 w-full md:w-auto">
-            <label class="font-bold text-gray-700 text-sm whitespace-nowrap">Employee Name:</label>
-            <input type="text" id="employee-name" placeholder="Enter Name..." class="border rounded p-2 text-sm font-semibold w-full md:w-64 border-gray-300 shadow-sm focus:ring-brand focus:border-brand">
+<body class="bg-gray-50 text-slate-800 transition-colors duration-300 dark:bg-dark dark:text-gray-100 font-sans min-h-screen flex flex-col">
+
+    <!-- Sticky Header -->
+    <header class="fixed w-full top-0 z-50 glass transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Left: Weather -->
+                <div class="flex-1 flex items-center">
+                    <!-- Changed background to slate-800 text-white for better icon contrast in both modes -->
+                    <div id="weather-info" class="flex items-center text-sm font-medium bg-slate-800 text-white px-3 py-1 rounded-full transition-transform hover:scale-105 shadow-md">
+                        <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading...
+                    </div>
+                </div>
+
+                <!-- Center: Title -->
+                <div class="flex-1 flex flex-col items-center justify-center">
+                    <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+                        Helpful Links
+                    </h1>
+                    <a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=240319165608377" target="_blank" rel="noopener noreferrer" 
+                       class="text-[10px] uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors animate-pulse">
+                       <i class="fa-solid fa-mobile-screen-button mr-1"></i>Active Mobile Promos
+                    </a>
+                </div>
+
+                <!-- Right: Theme Toggle -->
+                <div class="flex-1 flex justify-end items-center gap-3">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+                        <i class="fa-solid fa-moon text-indigo-600 dark:text-yellow-400 text-lg transition-transform duration-500 rotate-0 dark:-rotate-180"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-        <button onclick="downloadPDF()" class="bg-brand hover:bg-brandDark text-white font-bold py-2 px-6 rounded shadow transition duration-200 w-full md:w-auto">
-            Download PDF
-        </button>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        
+        <!-- Search Bar -->
+        <div class="relative max-w-2xl mx-auto mb-12 group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-indigo-500 transition-colors"></i>
+            </div>
+            <input type="text" id="searchInput" 
+                   class="block w-full pl-11 pr-4 py-4 bg-white dark:bg-darkcard border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:placeholder-gray-400 dark:text-white transition-all text-lg" 
+                   placeholder="Search for tools, links, or contacts...">
+            <div id="noResultsMessage" class="hidden absolute top-full mt-2 w-full text-center text-gray-500 dark:text-gray-400 py-2">
+                No results found.
+            </div>
+        </div>
+
+        <!-- Grid Container -->
+        <main class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="grid-container">
+            
+            <!-- Section: Frontline -->
+            <section class="bg-white dark:bg-darkcard rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 transition-all duration-300 card-hover filter-item">
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-white">Frontline Primary</h2>
+                </div>
+                <ul class="space-y-3">
+                    <li><a href="https://celestial.cable.comcast.com/knowledge/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-book w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Celestial</a></li>
+                    <li><a href="https://retail360a.cable.comcast.com/login-nextgen#Layout=3" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-store w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Retail 360</a></li>
+                    <li><a href="https://einstein360a.cable.comcast.com/einstein_nxtgen#Layout=1" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-brain w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Einstein 360</a></li>
+                    <li><a href="https://comcast.infoquest.tv/home/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-circle-question w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> InfoQuest</a></li>
+                    <li><a href="https://comcast.medallia.com/sso/comcast/applications/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-star w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Medallia</a></li>
+                    <li><a href="https://comcast.kronos.net/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-clock w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Kronos</a></li>
+                    <li><a href="https://myperformance.comcast.net/performance/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-chart-line w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> myPerformance</a></li>
+                    <li><a href="https://wd5.myworkday.com/comcast/d/home.htmld" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-briefcase w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Workday</a></li>
+                    <li><a href="https://comcasthr.zendesk.com/hc/en-us" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-headset w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Ask HRSS</a></li>
+                    <li><a href="https://comcastcorp.sharepoint.com/sites/ComcastNow" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-newspaper w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> Comcast Now</a></li>
+                    <li><a href="https://xoe-portal.cws.xfinity.com/portal" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-desktop w-6 text-center text-gray-400 group-hover:text-indigo-500 transition-colors"></i> XOE Portal</a></li>
+                </ul>
+            </section>
+
+            <!-- Section: Transactions -->
+            <section class="bg-white dark:bg-darkcard rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 transition-all duration-300 card-hover filter-item">
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                    <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-white">Transactions & Forms</h2>
+                </div>
+                <ul class="space-y-3">
+                    <li><a href="https://comcast.brandsrv.com/AppLogin.aspx" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-tv w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Channel Lineup</a></li>
+                    <li><a href="https://abt.cable.comcast.com/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-truck-fast w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> ABT</a></li>
+                    <li><a href="https://housesmart.cable.comcast.com/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-house-signal w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> House SMaRT</a></li>
+                    <li><a href="https://fetchitup.comcast.com/#/login" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-magnifying-glass w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Fetch It Up</a></li>
+                    <li><a href="https://www.xfinityincentivetracker.com/track" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-gift w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Incentive Tracker</a></li>
+                    <li><a href="https://inseasonal.cable.comcast.com/home" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-plane-departure w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Seasonal Enrollment</a></li>
+                    <li><a href="https://www.comcastbizleads.com/EnhancedBusinessAdvantageHome" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-dollar-sign w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Business Leads</a></li>
+                    <li><a href="https://ecm.comcast.com/ecm" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-file-contract w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> ECM</a></li>
+                    <li><a href="https://celestial.cable.comcast.com/knowledge/article-info/?query=200826155424716" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-qrcode w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> QR Code Activation</a></li>
+                    <li><a href="https://www.xfinity.com/support/articles/streamsaver-offers-overview" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-play w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> StreamSaver</a></li>
+                    <li><a href="https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Account%20Holder%20Deceased.pdf" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-file-lines w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Death Form</a></li>
+                    <li><a href="https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Transfer%20of%20Ownership.pdf" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-file-lines w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Transfer Form</a></li>
+                    <li><a href="https://einstein360.cable.comcast.com/proxy/assets/km/aem/comcast/residential/general/file-attachment/2021-09-09/Name%20Change.pdf" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-file-lines w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Name Change Form</a></li>
+                    <li><a href="https://mobiletimetoswitch.xfinity.com/#/purchaseinfo" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-mobile-button w-6 text-center text-gray-400 group-hover:text-green-500 transition-colors"></i> Mobile Buyout</a></li>
+                </ul>
+            </section>
+
+            <!-- Section: Operations -->
+            <section class="bg-white dark:bg-darkcard rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 transition-all duration-300 card-hover filter-item">
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                    <div class="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-white">Operations</h2>
+                </div>
+                <ul class="space-y-3">
+                    <li><a href="https://idmsa.apple.com/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-mobile-screen w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> Dcota</a></li>
+                    <li><a href="#" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-wifi w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> Clearpass</a></li>
+                    <li><a href="https://xisco.comcast.net/home/menu" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-boxes-stacked w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> XiSCO</a></li>
+                    <li><a href="https://rposportal.comcast.com/cash-drawer" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-cash-register w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> Cash Management</a></li>
+                    <li><a href="https://comcast.convergentcare.com/cmcst/demoDashboard.jsp" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-desktop w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> Kiosk Site</a></li>
+                    <li><a href="https://cceis.mintek.com/EISWeb/login.aspx" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-warehouse w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> Mintek</a></li>
+                    <li><a href="https://cceis.mintek.com/xInventory/dashboard" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-box w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> Xinventory</a></li>
+                    <li><a href="https://xvip.merchandising.cloud/view/login" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-tags w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> XVIP</a></li>
+                    <li><a href="https://app.smartsheet.com/b/publish?EQBCT=9e879ff68c05488ea264ff933fa0d5e9" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-credit-card w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> Verifone</a></li>
+                    <li><a href="https://connect.invue.com/login" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-lock w-6 text-center text-gray-400 group-hover:text-orange-500 transition-colors"></i> InVue Connect</a></li>
+                </ul>
+            </section>
+
+            <!-- Section: Management -->
+            <section class="bg-white dark:bg-darkcard rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 transition-all duration-300 card-hover filter-item">
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                    <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-white">Management</h2>
+                </div>
+                <ul class="space-y-3">
+                    <li><a href="https://techspot.comcast.com/techspot?id=techspot_home_v2" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-screwdriver-wrench w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> TechSpot</a></li>
+                    <li><a href="https://mysupport.service-now.com/sp" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-circle-info w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> mySupport</a></li>
+                    <li><a href="https://mycomcastaccess.comcast.com/identityiq/home.jsf" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-id-card w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> MyComcastAccess</a></li>
+                    <li><a href="https://idlookup.cable.comcast.com/#/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-magnifying-glass-plus w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> ID Lookup</a></li>
+                    <li><a href="https://comcast.myonlineordering.com/login.aspx" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-address-card w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> Business Cards</a></li>
+                    <li><a href="https://myexpense.comcast.com/reports" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-receipt w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> myExpense</a></li>
+                    <li><a href="https://employeerequest.cable.comcast.com/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-user-check w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> Badge Request</a></li>
+                    <li><a href="https://ts4.comcast.com/" target="_blank" class="flex items-center group text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><i class="fa-solid fa-chart-pie w-6 text-center text-gray-400 group-hover:text-purple-500 transition-colors"></i> Tableau</a></li>
+                </ul>
+            </section>
+
+            <!-- Section: Important Contacts -->
+            <section class="bg-white dark:bg-darkcard rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 transition-all duration-300 card-hover filter-item md:col-span-2 xl:col-span-1">
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                    <div class="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg text-red-600 dark:text-red-400">
+                        <i class="fa-solid fa-address-book"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-white">Important Contacts</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-4">
+                    <!-- Contact Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-sm">Mike Dube</span>
+                            <a href="tel:6036613011" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">(603) 661-3011</a>
+                        </div>
+                        <button class="copy-btn text-gray-400 hover:text-indigo-500 transition-colors p-2" data-clipboard-text="603-661-3011">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- Contact Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-sm">Jason Rys</span>
+                            <a href="tel:8057127522" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">(805) 712-7522</a>
+                        </div>
+                        <button class="copy-btn text-gray-400 hover:text-indigo-500 transition-colors p-2" data-clipboard-text="805-712-7522">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- Contact Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-sm">Matthew Descoteau</span>
+                            <a href="tel:8027771802" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">(802) 777-1802</a>
+                        </div>
+                        <button class="copy-btn text-gray-400 hover:text-indigo-500 transition-colors p-2" data-clipboard-text="802-777-1802">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- Contact Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-sm">Josh Salthouse</span>
+                            <span class="text-xs text-red-500 font-bold">Security</span>
+                            <a href="tel:8609905570" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">(860) 990-5570</a>
+                        </div>
+                        <button class="copy-btn text-gray-400 hover:text-indigo-500 transition-colors p-2" data-clipboard-text="860-990-5570">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- Contact Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-sm">Mark Agruso</span>
+                            <span class="text-xs text-red-500 font-bold">Security</span>
+                            <a href="tel:8606263165" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">(860) 626-3165</a>
+                        </div>
+                        <button class="copy-btn text-gray-400 hover:text-indigo-500 transition-colors p-2" data-clipboard-text="860-626-3165">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">Security 101</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">(800) 991-4170</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="800-991-4170"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <!-- Contact Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-sm">Mark Geraghty</span>
+                            <span class="text-xs text-blue-500 font-bold">Business</span>
+                            <a href="tel:8558382082" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">(855) 838-2082</a>
+                        </div>
+                        <button class="copy-btn text-gray-400 hover:text-indigo-500 transition-colors p-2" data-clipboard-text="855-838-2082">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- Contact Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-sm">John McMahon</span>
+                            <span class="text-xs text-orange-500 font-bold">Facilities</span>
+                            <a href="tel:8604916737" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">(860) 491-6737</a>
+                        </div>
+                        <button class="copy-btn text-gray-400 hover:text-indigo-500 transition-colors p-2" data-clipboard-text="860-491-6737">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Section: Support Numbers -->
+             <section class="bg-white dark:bg-darkcard rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 transition-all duration-300 card-hover filter-item">
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                    <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-white">Support Numbers</h2>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- Support Item -->
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">Customer IVR</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">800-934-6489</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="800-934-6489"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">CB IVR</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">800-391-3000</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="800-391-3000"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">XM Support</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">888-934-6489</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="888-934-6489"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">CSA Fraud</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">844-335-8719</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="844-335-8719"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">Internet Essentials</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">855-846-8376</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="855-846-8376"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">COE Tier 2</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">866-461-0805</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="866-461-0805"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">CBM Pre/Post Sale</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">844-963-0210</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="844-963-0210"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">TPV</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">855-423-9888</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="855-423-9888"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">IVR Verbal Consent</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">844-963-0043</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="844-963-0043"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">Landline Porting</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">877-397-9734</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="877-397-9734"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="text-sm font-medium">XM International</span>
+                        <div class="flex items-center">
+                            <span class="text-xs mr-2 text-gray-500">720-728-5462</span>
+                            <button class="copy-btn text-gray-400 hover:text-indigo-500" data-clipboard-text="720-728-5462"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <!-- Main Content Wrapper (This gets converted to PDF) -->
-    <div id="calculator-content" class="max-w-7xl mx-auto space-y-6 bg-gray-100 p-4 rounded-xl">
-        
-        <!-- Header Controls & Totals -->
-        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-brand space-y-4">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b pb-4">
-                <div class="flex items-center gap-3 w-full md:w-auto">
-                    <label class="font-bold text-gray-700 text-sm whitespace-nowrap">Role:</label>
-                    <select id="role-select" class="calc-input border rounded p-2 text-sm font-semibold w-full md:w-auto bg-gray-50 border-gray-300">
-                        <option value="SM">Store Manager</option>
-                        <option value="ASM">Assistant Store Manager</option>
-                        <option value="MM">Market Manager</option>
-                        <option value="RSC2">RSC2 & RSC2 Advanced</option>
-                        <option value="RSC3">RSC3 (Retail Sales Lead)</option>
-                    </select>
-                </div>
-                
-                <div class="flex items-center gap-3 w-full md:w-auto">
-                    <label class="font-bold text-gray-700 text-sm whitespace-nowrap">PTO Accelerator %:</label>
-                    <input type="number" id="pto-acc" class="calc-input border rounded p-2 text-center text-sm font-semibold w-28 bg-gray-50 border-gray-300" value="0.00" step="0.5" min="0">
-                </div>
-            </div>
+    <!-- Footer -->
+    <footer class="mt-auto py-6 text-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-slate-800">
+        &copy; 2025 Bwest Inc. All rights reserved.
+    </footer>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
-                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold">Total Incentive Compensation</div>
-                    <div id="total-tic-display" class="text-xl font-bold text-brand">$2,409.00</div>
-                </div>
-                <div class="bg-green-50 p-3 rounded-lg border border-green-100">
-                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold">Total Payout</div>
-                    <div id="total-payout" class="text-2xl font-extrabold text-green-600">$0.00</div>
-                </div>
-                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold">% to TIC</div>
-                    <div id="total-tic-pct" class="text-2xl font-extrabold text-blue-600">0.00%</div>
-                </div>
-            </div>
-        </div>
+    <!-- Back to top -->
+    <button id="backToTopBtn" class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-xl shadow-lg transition-all duration-300 transform translate-y-20 opacity-0 z-40">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
 
-        <!-- Input Tables Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <!-- M1 Mobile Credit/Tier Table -->
-            <div class="bg-white p-5 rounded-lg shadow-md border-t-4 border-brand flex flex-col justify-between">
-                <div>
-                    <h2 class="text-md font-bold text-brand border-b pb-2 mb-4 text-center uppercase tracking-wide">M1 Credit/Tier Table</h2>
-                    
-                    <div class="space-y-3 text-xs md:text-sm">
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">Mobile Plus</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m1-plus" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 1.25 =</span>
-                                <span id="m1-plus-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">All Other XM</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m1-other" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 1.00 =</span>
-                                <span id="m1-other-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">Device Upgrades</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m1-upg" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 0.50 =</span>
-                                <span id="m1-upg-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">Tier Upg / XM Care</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m1-care" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 0.25 =</span>
-                                <span id="m1-care-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 border-t pt-3 space-y-2">
-                    <div class="flex justify-between items-center font-bold text-sm">
-                        <span>M1 Net Credits</span>
-                        <span id="m1-net" class="font-mono text-brand font-extrabold text-base">0.00</span>
-                    </div>
-                    <div class="flex justify-between items-center font-bold text-sm">
-                        <span>M1 Goal</span>
-                        <input type="number" id="m1-goal" class="calc-input w-24 border rounded p-1 text-center bg-gray-50 font-bold" value="360" min="1">
-                    </div>
-                </div>
-            </div>
-
-            <!-- M2 Internet Credit/Tier Table -->
-            <div class="bg-white p-5 rounded-lg shadow-md border-t-4 border-brand flex flex-col justify-between">
-                <div>
-                    <h2 class="text-md font-bold text-brand border-b pb-2 mb-4 text-center uppercase tracking-wide">M2 Credit/Tier Table</h2>
-                    
-                    <div class="space-y-3 text-xs md:text-sm">
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">Gig Internet</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m2-gig" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 1.25 =</span>
-                                <span id="m2-gig-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">All Other Internet</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m2-other" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 1.00 =</span>
-                                <span id="m2-other-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">Tier Upg / Next-Gen</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m2-upg" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 0.25 =</span>
-                                <span id="m2-upg-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 border-t pt-3 space-y-2">
-                    <div class="flex justify-between items-center font-bold text-sm">
-                        <span>M2 Net Credits</span>
-                        <span id="m2-net" class="font-mono text-brand font-extrabold text-base">0.00</span>
-                    </div>
-                    <div class="flex justify-between items-center font-bold text-sm">
-                        <span>M2 Goal</span>
-                        <input type="number" id="m2-goal" class="calc-input w-24 border rounded p-1 text-center bg-gray-50 font-bold" value="270" min="1">
-                    </div>
-                </div>
-            </div>
-
-            <!-- M3 Base Credit/Tier Table -->
-            <div class="bg-white p-5 rounded-lg shadow-md border-t-4 border-brand flex flex-col justify-between">
-                <div>
-                    <h2 class="text-md font-bold text-brand border-b pb-2 mb-4 text-center uppercase tracking-wide">M3 Credit/Tier Table</h2>
-                    
-                    <div class="space-y-3 text-xs md:text-sm">
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">Ent / Home / Voice</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m3-ent" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 1.00 =</span>
-                                <span id="m3-ent-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">StreamSaver</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m3-stream" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 0.25 =</span>
-                                <span id="m3-stream-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <label class="w-1/2 font-medium">Accessories</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="m3-acc" class="calc-input w-20 border rounded p-1 text-center font-semibold" value="0" min="0">
-                                <span class="text-gray-400">× 0.25 =</span>
-                                <span id="m3-acc-sub" class="w-16 text-right font-mono font-bold">0.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 border-t pt-3 space-y-2">
-                    <div class="flex justify-between items-center font-bold text-sm">
-                        <span>M3 Net Credits</span>
-                        <span id="m3-net" class="font-mono text-brand font-extrabold text-base">0.00</span>
-                    </div>
-                    <div class="flex justify-between items-center font-bold text-sm">
-                        <span>M3 Goal</span>
-                        <input type="number" id="m3-goal" class="calc-input w-24 border rounded p-1 text-center bg-gray-50 font-bold" value="180" min="1">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Attainment & Payout Summary Table -->
-        <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
-            <table class="w-full text-center text-xs md:text-sm border-collapse">
-                <thead>
-                    <tr class="border-b-2 border-gray-200 text-gray-600">
-                        <th class="text-left py-2">Measure</th>
-                        <th class="py-2">Attainment</th>
-                        <th class="py-2">+</th>
-                        <th class="py-2">PTO Accel</th>
-                        <th class="py-2">=</th>
-                        <th class="py-2">Achievement</th>
-                        <th class="py-2">=</th>
-                        <th class="py-2">Pay Percent</th>
-                        <th class="py-2">×</th>
-                        <th class="py-2">Opportunity</th>
-                        <th class="py-2">=</th>
-                        <th class="py-2 text-right">Payout</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100 font-semibold">
-                    <tr>
-                        <td class="text-left py-3 text-brand font-bold">M1 - Mobile Achievement</td>
-                        <td id="tbl-m1-attain">0.00%</td>
-                        <td class="text-gray-400">+</td>
-                        <td id="tbl-m1-pto">0.00%</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m1-achieve">0.00%</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m1-paypct" class="text-brand">0.00%</td>
-                        <td class="text-gray-400">×</td>
-                        <td id="tbl-m1-opp">$0.00</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m1-payout" class="text-right text-green-600 font-bold">$0.00</td>
-                    </tr>
-                    <tr>
-                        <td class="text-left py-3 text-brand font-bold">M2 - Internet Achievement</td>
-                        <td id="tbl-m2-attain">0.00%</td>
-                        <td class="text-gray-400">+</td>
-                        <td id="tbl-m2-pto">0.00%</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m2-achieve">0.00%</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m2-paypct" class="text-brand">0.00%</td>
-                        <td class="text-gray-400">×</td>
-                        <td id="tbl-m2-opp">$0.00</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m2-payout" class="text-right text-green-600 font-bold">$0.00</td>
-                    </tr>
-                    <tr>
-                        <td class="text-left py-3 text-brand font-bold">M3 - Base Achievement</td>
-                        <td id="tbl-m3-attain">0.00%</td>
-                        <td class="text-gray-400">+</td>
-                        <td id="tbl-m3-pto">0.00%</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m3-achieve">0.00%</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m3-paypct" class="text-brand">0.00%</td>
-                        <td class="text-gray-400">×</td>
-                        <td id="tbl-m3-opp">$0.00</td>
-                        <td class="text-gray-400">=</td>
-                        <td id="tbl-m3-payout" class="text-right text-green-600 font-bold">$0.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Pay Curve Graphs Container -->
-        <div class="bg-brand rounded-lg shadow-md p-3">
-            <h3 class="text-white text-center font-bold text-sm tracking-wide uppercase mb-3" id="curves-title">Measure Pay Curves</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Chart M1 -->
-                <div class="bg-white rounded p-3 shadow">
-                    <div class="text-xs font-bold text-center text-gray-700 mb-2">M1 Mobile Pay Curve</div>
-                    <div class="relative h-60">
-                        <canvas id="chartM1"></canvas>
-                    </div>
-                </div>
-
-                <!-- Chart M2 -->
-                <div class="bg-white rounded p-3 shadow">
-                    <div class="text-xs font-bold text-center text-gray-700 mb-2">M2 Internet Pay Curve</div>
-                    <div class="relative h-60">
-                        <canvas id="chartM2"></canvas>
-                    </div>
-                </div>
-
-                <!-- Chart M3 -->
-                <div class="bg-white rounded p-3 shadow">
-                    <div class="text-xs font-bold text-center text-gray-700 mb-2">M3 Base Pay Curve</div>
-                    <div class="relative h-60">
-                        <canvas id="chartM3"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-xl flex items-center gap-2 transition-all duration-300 translate-y-20 opacity-0 z-50">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span>Copied to clipboard!</span>
     </div>
 
     <script>
-        // Store and Rep Configurations
-        const ROLES = {
-            SM: { title: "Store Manager Pay Curves", type: "leader", m1: 1445.00, m2: 482.00, m3: 482.00 },
-            ASM: { title: "Assistant Store Manager Pay Curves", type: "leader", m1: 1095.00, m2: 365.00, m3: 365.00 },
-            MM: { title: "Market Manager Pay Curves", type: "leader", m1: 1595.00, m2: 532.00, m3: 532.00 },
-            RSC2: { title: "RSC2 & RSC2 Advanced Pay Curves", type: "rep", m1: 872.50, m2: 290.83, m3: 290.83 },
-            RSC3: { title: "RSC3 Pay Curves", type: "rep", m1: 950.00, m2: 316.67, m3: 316.67 }
-        };
-
-        let chartM1Instance = null;
-        let chartM2Instance = null;
-        let chartM3Instance = null;
-
-        function getVal(id) {
-            return parseFloat(document.getElementById(id).value) || 0;
-        }
-
-        function setTxt(id, txt) {
-            document.getElementById(id).innerText = txt;
-        }
-
-        // Payout Logic: Frontline vs. Leadership
-        function calcM1M2Curve(pct, type) {
-            if (type === 'leader') {
-                if (pct <= 75) return pct * 0.8; 
-                if (pct <= 100) return 60 + (pct - 75) * 1.6;
-                if (pct <= 300) return 100 + (pct - 100) * 2;
-                return 500 + (pct - 300) * 1;
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Dark Mode Logic ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            
+            // Priority: LocalStorage -> System Preference -> Default Light
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
             } else {
-                if (pct <= 60) return pct * 0.333333;
-                if (pct <= 80) return 20 + (pct - 60) * 3;
-                if (pct <= 110) return 80 + (pct - 80) * 1;
-                if (pct <= 225) return 110 + (pct - 110) * 2;
-                return 340 + (pct - 225) * 1;
+                html.classList.remove('dark');
             }
-        }
 
-        function calcM3Curve(pct, type) {
-            if (pct <= 30) return pct * 0.666667;
-            if (pct <= 100) return 20 + (pct - 30) * 1.142857;
-            return 100 + (pct - 100) * 1;
-        }
-
-        function getM1M2CurvePoints(type) {
-            let pts = [];
-            for (let x = 0; x <= 600; x += 10) pts.push({ x: x, y: calcM1M2Curve(x, type) });
-            return pts;
-        }
-
-        function getM3CurvePoints(type) {
-            let pts = [];
-            for (let x = 0; x <= 600; x += 10) pts.push({ x: x, y: calcM3Curve(x, type) });
-            return pts;
-        }
-
-        // Chart.js Implementations (Animations disabled for clean PDF rendering)
-        function initCharts() {
-            const currentType = ROLES[document.getElementById('role-select').value].type;
-            const commonOptions = {
-                responsive: true, maintainAspectRatio: false, animation: false,
-                scales: {
-                    x: { type: 'linear', min: 0, max: 600, ticks: { stepSize: 100, callback: v => v + '%' }, title: { display: true, text: '% Achievement', font: { size: 10 } } },
-                    y: { type: 'linear', min: 0, max: 600, ticks: { stepSize: 100, callback: v => v + '%' }, title: { display: true, text: '% of TIC', font: { size: 10 } } }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => ctx.datasetIndex === 1 
-                                ? ` Current: ${ctx.parsed.x.toFixed(1)}% Ach / ${ctx.parsed.y.toFixed(1)}% TIC`
-                                : ` Curve: ${ctx.parsed.x}% Ach = ${ctx.parsed.y.toFixed(1)}% TIC`
-                        }
-                    }
+            themeToggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                if (html.classList.contains('dark')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
                 }
-            };
-
-            const dataSetup = (pts) => ({
-                datasets: [
-                    { label: 'Pay Curve', data: pts, borderColor: '#3b82f6', borderWidth: 2, pointRadius: 0 },
-                    { label: 'Current Point', data: [{ x: 0, y: 0 }], backgroundColor: '#10b981', borderColor: '#047857', borderWidth: 2, pointStyle: 'rectRot', pointRadius: 8 }
-                ]
             });
 
-            chartM1Instance = new Chart(document.getElementById('chartM1').getContext('2d'), { type: 'line', data: dataSetup(getM1M2CurvePoints(currentType)), options: commonOptions });
-            chartM2Instance = new Chart(document.getElementById('chartM2').getContext('2d'), { type: 'line', data: dataSetup(getM1M2CurvePoints(currentType)), options: commonOptions });
-            chartM3Instance = new Chart(document.getElementById('chartM3').getContext('2d'), { type: 'line', data: dataSetup(getM3CurvePoints(currentType)), options: commonOptions });
-        }
+            // --- Search Filter Logic ---
+            const searchInput = document.getElementById('searchInput');
+            const sections = document.querySelectorAll('.filter-item');
+            const noResultsMessage = document.getElementById('noResultsMessage');
 
-        function updateChartCurves(type) {
-            chartM1Instance.data.datasets[0].data = getM1M2CurvePoints(type);
-            chartM2Instance.data.datasets[0].data = getM1M2CurvePoints(type);
-            chartM3Instance.data.datasets[0].data = getM3CurvePoints(type);
-        }
+            searchInput.addEventListener('keyup', function() {
+                const filter = this.value.toUpperCase();
+                let anyVisible = false;
 
-        function updateChartPoint(chart, x, y) {
-            if (!chart) return;
-            let maxAxis = Math.max(600, Math.ceil(x / 100) * 100 + 100, Math.ceil(y / 100) * 100 + 100);
-            chart.options.scales.x.max = maxAxis;
-            chart.options.scales.y.max = maxAxis;
-            chart.data.datasets[1].data = [{ x: x, y: y }];
-            chart.update();
-        }
+                sections.forEach(section => {
+                    const sectionTitle = section.querySelector('h2').textContent.toUpperCase();
+                    const listItems = section.querySelectorAll('li, .flex.justify-between'); // Selects standard list items and contact cards
+                    let sectionHasMatch = false;
 
-        // Calculation Loop
-        function calculate() {
-            const roleKey = document.getElementById('role-select').value;
-            const role = ROLES[roleKey];
-            const ptoAcc = getVal('pto-acc');
+                    // Check list items
+                    listItems.forEach(item => {
+                        const text = item.textContent || item.innerText;
+                        if (text.toUpperCase().indexOf(filter) > -1) {
+                            item.classList.remove('hidden');
+                            sectionHasMatch = true;
+                        } else {
+                            if (!sectionTitle.includes(filter)) {
+                                item.classList.add('hidden');
+                            }
+                        }
+                    });
 
-            setTxt('curves-title', role.title);
-            setTxt('total-tic-display', `$${(role.m1 + role.m2 + role.m3).toFixed(2)}`);
-            updateChartCurves(role.type);
+                    // If title matches, show all items
+                    if (sectionTitle.includes(filter)) {
+                        sectionHasMatch = true;
+                        listItems.forEach(item => item.classList.remove('hidden'));
+                    }
 
-            // M1 Process
-            let m1Net = (getVal('m1-plus') * 1.25) + (getVal('m1-other') * 1.00) + (getVal('m1-upg') * 0.50) + (getVal('m1-care') * 0.25);
-            setTxt('m1-plus-sub', (getVal('m1-plus') * 1.25).toFixed(2));
-            setTxt('m1-other-sub', (getVal('m1-other') * 1.00).toFixed(2));
-            setTxt('m1-upg-sub', (getVal('m1-upg') * 0.50).toFixed(2));
-            setTxt('m1-care-sub', (getVal('m1-care') * 0.25).toFixed(2));
-            
-            let m1Goal = getVal('m1-goal') || 1;
-            let m1Attain = (m1Net / m1Goal) * 100;
-            let m1Achieve = m1Attain + ptoAcc;
-            let m1PayPct = calcM1M2Curve(m1Achieve, role.type);
-            let m1Payout = role.m1 * (m1PayPct / 100);
-            setTxt('m1-net', m1Net.toFixed(2));
+                    if (sectionHasMatch) {
+                        section.classList.remove('hidden');
+                        anyVisible = true;
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
 
-            // M2 Process
-            let m2Net = (getVal('m2-gig') * 1.25) + (getVal('m2-other') * 1.00) + (getVal('m2-upg') * 0.25);
-            setTxt('m2-gig-sub', (getVal('m2-gig') * 1.25).toFixed(2));
-            setTxt('m2-other-sub', (getVal('m2-other') * 1.00).toFixed(2));
-            setTxt('m2-upg-sub', (getVal('m2-upg') * 0.25).toFixed(2));
-
-            let m2Goal = getVal('m2-goal') || 1;
-            let m2Attain = (m2Net / m2Goal) * 100;
-            let m2Achieve = m2Attain + ptoAcc;
-            let m2PayPct = calcM1M2Curve(m2Achieve, role.type);
-            let m2Payout = role.m2 * (m2PayPct / 100);
-            setTxt('m2-net', m2Net.toFixed(2));
-
-            // M3 Process
-            let m3Net = (getVal('m3-ent') * 1.00) + (getVal('m3-stream') * 0.25) + (getVal('m3-acc') * 0.25);
-            setTxt('m3-ent-sub', (getVal('m3-ent') * 1.00).toFixed(2));
-            setTxt('m3-stream-sub', (getVal('m3-stream') * 0.25).toFixed(2));
-            setTxt('m3-acc-sub', (getVal('m3-acc') * 0.25).toFixed(2));
-
-            let m3Goal = getVal('m3-goal') || 1;
-            let m3Attain = (m3Net / m3Goal) * 100;
-            let m3Achieve = m3Attain + ptoAcc;
-            let m3PayPct = calcM3Curve(m3Achieve, role.type);
-            let m3Payout = role.m3 * (m3PayPct / 100);
-            setTxt('m3-net', m3Net.toFixed(2));
-
-            // Update Tables
-            setTxt('tbl-m1-attain', m1Attain.toFixed(2) + '%'); setTxt('tbl-m1-pto', ptoAcc.toFixed(2) + '%'); setTxt('tbl-m1-achieve', m1Achieve.toFixed(2) + '%'); setTxt('tbl-m1-paypct', m1PayPct.toFixed(2) + '%'); setTxt('tbl-m1-opp', `$${role.m1.toFixed(2)}`); setTxt('tbl-m1-payout', `$${m1Payout.toFixed(2)}`);
-            setTxt('tbl-m2-attain', m2Attain.toFixed(2) + '%'); setTxt('tbl-m2-pto', ptoAcc.toFixed(2) + '%'); setTxt('tbl-m2-achieve', m2Achieve.toFixed(2) + '%'); setTxt('tbl-m2-paypct', m2PayPct.toFixed(2) + '%'); setTxt('tbl-m2-opp', `$${role.m2.toFixed(2)}`); setTxt('tbl-m2-payout', `$${m2Payout.toFixed(2)}`);
-            setTxt('tbl-m3-attain', m3Attain.toFixed(2) + '%'); setTxt('tbl-m3-pto', ptoAcc.toFixed(2) + '%'); setTxt('tbl-m3-achieve', m3Achieve.toFixed(2) + '%'); setTxt('tbl-m3-paypct', m3PayPct.toFixed(2) + '%'); setTxt('tbl-m3-opp', `$${role.m3.toFixed(2)}`); setTxt('tbl-m3-payout', `$${m3Payout.toFixed(2)}`);
-
-            let totalPayout = m1Payout + m2Payout + m3Payout;
-            setTxt('total-payout', `$${totalPayout.toFixed(2)}`);
-            setTxt('total-tic-pct', ((totalPayout / (role.m1 + role.m2 + role.m3)) * 100).toFixed(2) + '%');
-
-            // Render Graphs
-            updateChartPoint(chartM1Instance, m1Achieve, m1PayPct);
-            updateChartPoint(chartM2Instance, m2Achieve, m2PayPct);
-            updateChartPoint(chartM3Instance, m3Achieve, m3PayPct);
-        }
-
-        function downloadPDF() {
-            const element = document.getElementById('calculator-content');
-            const name = document.getElementById('employee-name').value || 'Employee';
-            const roleSelect = document.getElementById('role-select');
-            const roleName = roleSelect.options[roleSelect.selectedIndex].text;
-            
-            const opt = {
-                margin:       0.2,
-                filename:     `${name.replace(/[^a-z0-9]/gi, '_')}_${roleName.replace(/[^a-z0-9]/gi, '_')}_Commissions.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).save();
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initCharts();
-            document.querySelectorAll('.calc-input').forEach(input => {
-                input.addEventListener('input', calculate);
-                input.addEventListener('change', calculate);
+                if (anyVisible) {
+                    noResultsMessage.classList.add('hidden');
+                } else {
+                    noResultsMessage.classList.remove('hidden');
+                }
             });
-            calculate();
+
+            // --- Toast & Copy Logic ---
+            const toast = document.getElementById('toast');
+            let toastTimeout;
+
+            function showToast() {
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 2500);
+            }
+
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Prevent button click from triggering standard link behavior if nested
+                    e.preventDefault(); 
+                    const textToCopy = button.getAttribute('data-clipboard-text');
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        showToast();
+                    }).catch(err => console.error('Failed to copy', err));
+                });
+            });
+
+            // --- Weather Widget ---
+            const apiKey = '0f19958b4004e882ae745df3f9823c80';
+            const lat = 44.4415; 
+            const lon = -73.1007;
+            const weatherDiv = document.getElementById('weather-info');
+
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.weather) {
+                        const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+                        weatherDiv.innerHTML = `<img src="${iconUrl}" class="w-6 h-6 mr-1" alt="Weather"> ${Math.round(data.main.temp)}°F, ${data.weather[0].main}`;
+                    }
+                })
+                .catch(() => {
+                    weatherDiv.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-1"></i> N/A`;
+                });
+
+            // --- Back to Top ---
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 200) {
+                    backToTopBtn.classList.remove('translate-y-20', 'opacity-0');
+                } else {
+                    backToTopBtn.classList.add('translate-y-20', 'opacity-0');
+                }
+            });
+            backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         });
     </script>
 </body>
